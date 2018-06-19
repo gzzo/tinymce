@@ -9,6 +9,7 @@
  */
 
 import EditorManager from 'tinymce/core/api/EditorManager';
+import Env from 'tinymce/core/api/Env';
 import Tools from 'tinymce/core/api/util/Tools';
 import Settings from '../api/Settings';
 
@@ -31,7 +32,11 @@ EditorManager._beforeUnloadHandler = function () {
 };
 
 const setup = function (editor) {
-  window.onbeforeunload = EditorManager._beforeUnloadHandler;
+  if (Env.iOS) {
+    window.onpagehide = EditorManager._beforeUnloadHandler;
+  } else {
+    window.onbeforeunload = EditorManager._beforeUnloadHandler;
+  }
 };
 
 export default {
