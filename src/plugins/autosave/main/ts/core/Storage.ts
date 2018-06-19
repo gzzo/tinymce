@@ -48,7 +48,10 @@ const removeDraft = function (editor, fire?) {
 const storeDraft = function (editor) {
   const prefix = Settings.getAutoSavePrefix(editor);
 
-  if (!isEmpty(editor) && editor.isDirty()) {
+  if (isEmpty(editor)) {
+    LocalStorage.removeItem(prefix + 'draft');
+    LocalStorage.removeItem(prefix + 'time');
+  } else if (editor.isDirty()) {
     LocalStorage.setItem(prefix + 'draft', editor.getContent({ format: 'raw', no_events: true }));
     LocalStorage.setItem(prefix + 'time', new Date().getTime().toString());
     Events.fireStoreDraft(editor);
